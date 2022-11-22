@@ -24,10 +24,11 @@ app.use((req, res, next) => {
 });
 
 
-//Test middlewares
-app.use((req, res) => {
-   res.json({ message: 'Votre requête a bien été reçue !' }); 
-});
+// //Test middlewares
+// app.use((req, res, next) => {
+//    res.json({ message: 'Votre requête a bien été reçue !' }); 
+//    next();
+// });
 
 
 //Register routers
