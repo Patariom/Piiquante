@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
+const path = require('path');
+
 //Import the routers into the app
 const userRoutes = require('./routes/user');
+const saucesRoutes = require('./routes/sauce');
 
 //Connect to Mongoose
 mongoose.connect('mongodb+srv://piiquanteadmin:carolina6reaper@piiquante.frqhwfm.mongodb.net/?retryWrites=true&w=majority',
@@ -24,16 +27,9 @@ app.use((req, res, next) => {
 });
 
 
-// //Test middlewares
-// app.use((req, res, next) => {
-//    res.json({ message: 'Votre requête a bien été reçue !' }); 
-//    next();
-// });
-
-
 //Register routers
 app.use('/api/auth', userRoutes);
-
-
+app.use('/api/sauces', saucesRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
