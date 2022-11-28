@@ -1,4 +1,5 @@
 const Sauce = require('../models/Sauce');
+const fs = require('fs');
 
 //Function "create a new sauce"
 exports.createSauce = (req, res, next) => {
@@ -58,3 +59,19 @@ exports.modifySauce = (req, res, next) => {
 
 
 //Function "Delete a sauce"
+exports.deleteSauce = (req, res, next) => {
+    Sauce.findOne({_id: req.params.id})
+        .then(sauce => {
+            if(sauce.userId != req.auth.userId) {
+                res.status(401).json({message : 'Vous n\'êtes pas autorisé à réaliser cette action.'});
+            } else {
+                const filename = sauce.imageUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    Sauce.deleteOne({_id: req.params.id})
+                        .then(() => {res.status(200).json({message: 'La sauce a été supprimée !' })})
+                        .catch((error) => {res.status(4001).json({ error })});
+                })
+            }
+        })
+        .catch((error) => {res.status(500).json({error: error})});
+};
