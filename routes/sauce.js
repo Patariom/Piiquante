@@ -10,5 +10,7 @@ const saucesCtrl = require('../controllers/sauce');
 router.post('/', auth, multer, saucesCtrl.createSauce);
 router.get('/', auth, saucesCtrl.getAllSauces);
 router.get('/:id', auth, saucesCtrl.getOneSauce);
+router.put('/:id', auth, multer, saucesCtrl.modifySauce);
+
 
 module.exports = router;
