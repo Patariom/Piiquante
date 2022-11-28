@@ -7,7 +7,7 @@ exports.createSauce = (req, res, next) => {
     delete sauceObject._userId; //On ne fait pas confiance au client, on récupèrera le token
     const sauce = new Sauce({
         ...sauceObject,
-        userID: req.auth.userId,
+        userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         likes: 0,
         dislikes: 0,

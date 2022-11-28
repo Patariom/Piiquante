@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 
 const sauceSchema = mongoose.Schema({
-    userID: {type:String, required:true}, //voir si on doit mettre unique ?
+    userId: {type:String, required:true}, //voir si on doit mettre unique ?
     name: {type:String, required:true},
     manufacturer: {type:String, required:true},
     description: {type:String, required:true},
