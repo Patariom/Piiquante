@@ -42,26 +42,57 @@ exports.getOneSauce = (req, res, next) => {
 
 //Modify a sauce
 exports.modifySauce = (req, res, next) => {
-    const sauceObject = req.file ? {
-        ...JSON.parse(req.body.sauce),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-    } : { ...req.body }
-    delete sauceObject._userId;
-    Sauce.findOne({ _id: req.params.id })
-        .then((sauce) => {
-            if (sauce.userId != req.auth.userId) {
-                res.status(401).json({ message: 'Vous n\'êtes pas autorisé à réaliser cette action.' });
-            } else {
-                Sauce.updateOne(
-                    { _id: req.params.id },
-                    { ...sauceObject, _id: req.params.id }
-                )
-                    .then(() => { res.status(200).json({ message: 'La sauce a bien été mise à jour !' }) })
-                    .catch((error) => { res.status(401).json({ error: error }) });
-            }
+    //Check if modification contains an image
+    if (req.file) {
+        //If there's an image 
+        const sauceObject = {
+            ...JSON.parse(req.body.sauce),
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         }
-        )
-        .catch((error) => { res.status(400).json({ error }) });
+
+        delete sauceObject._userId;
+
+        Sauce.findOne({ _id: req.params.id })
+            .then((sauce) => {
+                //Check if user ID of the sauce is the same than the user ID with Auth
+                if (sauce.userId != req.auth.userId) {
+                    res.status(401).json({ message: 'Vous n\'êtes pas autorisé à réaliser cette action.' });
+                } else {
+                    //Delete the existing image of the sauce
+                    const filename = sauce.imageUrl.split('/images/')[1];
+                    fs.unlink(`images/${filename}`, () => {
+                        //Update the sauce
+                        Sauce.updateOne(
+                            { _id: req.params.id },
+                            { ...sauceObject, _id: req.params.id }
+                        )
+                            .then(() => { res.status(200).json({ message: 'La sauce a bien été mise à jour !' }) })
+                            .catch((error) => { res.status(401).json({ error: error }) });
+                    });
+                };
+            })
+            .catch((error) => { res.status(400).json({ error }) });
+
+    } else {
+        //If there's no image
+        const sauceObject = { ...req.body }
+        delete sauceObject._userId;
+
+        Sauce.findOne({ _id: req.params.id })
+            .then((sauce) => {
+                //Check if user ID of the sauce is the same than the user ID with Auth
+                if (sauce.userId != req.auth.userId) {
+                    res.status(401).json({ message: 'Vous n\'êtes pas autorisé à réaliser cette action.' });
+                } else {
+                    Sauce.updateOne(
+                        { _id: req.params.id },
+                        { ...sauceObject, _id: req.params.id }
+                    )
+                        .then(() => { res.status(200).json({ message: 'La sauce a bien été mise à jour !' }) })
+                        .catch((error) => { res.status(401).json({ error: error }) });
+                };
+            })
+    }
 };
 
 
