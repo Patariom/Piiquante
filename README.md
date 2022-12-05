@@ -2,18 +2,21 @@
 
 <img width="713" alt="ImageWebsite" src="https://user-images.githubusercontent.com/106959664/205670884-8f3856d2-3d2e-4170-b6a0-1d155dd85a80.PNG">
 
-##### English version (click on the link to go directly to the [french version](https://github.com/Patariom/Piiquante/new/main?readme=1#french-version-click-on-the-link-to-go-directly-to-the-english-version))
+## English Version
+
+(click on the link to go directly to the [french version](#francais))
+
 *This work is the 6th project of OpenClassrooms Web Developer training.*
 This repo contains the backend of Hot Takes web app. Hot Takes is an application, developped for the brand Piiquante, that allows users to upload and rate spicy sauces.
 
 
-## Requirements
+### Requirements
 To get this project to work, you should have the following program installed :
 
 :arrow_right: Node V18.12+ (you can download it on [Node Website](https://nodejs.org/en/))
 
 
-## How to install
+### How to install
 
 :one: Create a folder for this project
 
@@ -45,20 +48,21 @@ The backend will run on [http://localhost:3000](http://localhost:3000)
 
 
 _______________________________________________________
-##### French version (click on the link to go directly to the english version)
+## Français
+(click on the link to go directly to the english version)
 
 *Ce travail a été réalisé pour le Projet 6 de la formaiton Développeur Web d'OpenClassrooms.*
 Ce repo contient uniquement le backend de l'application web Hot Takes. Hot Takes est une application, développée pour la marque de sauces Piiquante, qui propose 
 aux utilisateurs de télécharger et de noter des sauces piquantes.
 
 
-## Pré-requis 
+### Pré-requis 
 Pour faire fonctionner ce projet, vous devez installer le programme suivant :
 
 :arrow_right: Node V18.12+ (vous pouvez le télécharger sur le [site de Node](https://nodejs.org/en/))
 
 
-## Installation
+### Installation
 
 :one: Créez un dossier pour ce projet
 
