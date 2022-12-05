@@ -1,3 +1,4 @@
+//Requires
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -8,7 +9,7 @@ const path = require('path');
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauce');
 
-//Connect to Mongoose
+//Connect to MongooDB
 mongoose.connect('mongodb+srv://piiquanteadmin:carolina6reaper@piiquante.frqhwfm.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -18,7 +19,7 @@ mongoose.connect('mongodb+srv://piiquanteadmin:carolina6reaper@piiquante.frqhwfm
 //Parses incoming JSON requests and puts the parsed data in req.body
 app.use(express.json());
 
-//Allow the two apps to work together
+//Set headers CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');

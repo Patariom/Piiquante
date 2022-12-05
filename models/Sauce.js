@@ -1,8 +1,10 @@
+//Import Mongoose
 const mongoose = require("mongoose");
 
 
+//Create SauceSchema with Mongoose
 const sauceSchema = mongoose.Schema({
-    userId: {type:String, required:true}, //voir si on doit mettre unique ?
+    userId: {type:String, required:true}, 
     name: {type:String, required:true},
     manufacturer: {type:String, required:true},
     description: {type:String, required:true},
@@ -17,6 +19,6 @@ const sauceSchema = mongoose.Schema({
     usersDisliked: {type:Array, default: [], required:true},
 })
 
-
+//Export the Schema
 module.exports = mongoose.model("Sauce", sauceSchema);
 

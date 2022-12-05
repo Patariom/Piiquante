@@ -1,3 +1,4 @@
+//Requires
 const multer = require('multer');
 
 const MIME_TYPES = {
@@ -6,6 +7,7 @@ const MIME_TYPES = {
     'image/png' : 'png'
 }
 
+//Allow users to upload file that will be saved on the server in /images folder
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'images')

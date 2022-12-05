@@ -9,7 +9,8 @@ const fs = require('fs');
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
-    delete sauceObject._userId; //On ne fait pas confiance au client, on récupèrera le token
+    delete sauceObject._userId; //We do not trust client and get the userId from Token
+    //Create a new sauce according to Sauce Schema
     const sauce = new Sauce({
         ...sauceObject,
         userId: req.auth.userId,
@@ -19,6 +20,7 @@ exports.createSauce = (req, res, next) => {
         usersLiked: [],
         usersDisliked: [],
     });
+    //Save the sauce in database
     sauce.save()
         .then(() => { res.status(201).json({ message: 'La sauce a bien été créée !' }) })
         .catch((error) => { res.status(400).json({ error: error }) })
@@ -33,9 +35,8 @@ exports.getAllSauces = (req, res, next) => {
 
 //Get one sauce with ID
 exports.getOneSauce = (req, res, next) => {
-    Sauce.findOne({
-        _id: req.params.id
-    })
+    //Find sauce with its Id
+    Sauce.findOne({ _id: req.params.id })
         .then((sauce) => { res.status(200).json(sauce) })
         .catch((error) => { res.status(404).json({ error: error }) });
 };
@@ -49,19 +50,18 @@ exports.modifySauce = (req, res, next) => {
             ...JSON.parse(req.body.sauce),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         }
-
-        delete sauceObject._userId;
-
+        delete sauceObject._userId; //Distrust client and get the userId from Token
+        //Find sauce with its Id
         Sauce.findOne({ _id: req.params.id })
             .then((sauce) => {
-                //Check if user ID of the sauce is the same than the user ID with Auth
+                //Check if user ID of the sauce is the same than the user ID with Auth before going one with change
                 if (sauce.userId != req.auth.userId) {
                     res.status(401).json({ message: 'Vous n\'êtes pas autorisé à réaliser cette action.' });
                 } else {
                     //Delete the existing image of the sauce
                     const filename = sauce.imageUrl.split('/images/')[1];
                     fs.unlink(`images/${filename}`, () => {
-                        //Update the sauce
+                        //Update the sauce in database
                         Sauce.updateOne(
                             { _id: req.params.id },
                             { ...sauceObject, _id: req.params.id }
@@ -71,18 +71,21 @@ exports.modifySauce = (req, res, next) => {
                     });
                 };
             })
+            
             .catch((error) => { res.status(400).json({ error }) });
 
     } else {
         //If there's no image
         const sauceObject = { ...req.body }
-        delete sauceObject._userId;
+        delete sauceObject._userId; //Distrust client and get the userId from Token
 
+        //Find sauce with its Id
         Sauce.findOne({ _id: req.params.id })
             .then((sauce) => {
-                //Check if user ID of the sauce is the same than the user ID with Auth
+                //Check if user ID of the sauce is the same than the user ID with Auth before going one with change
                 if (sauce.userId != req.auth.userId) {
                     res.status(401).json({ message: 'Vous n\'êtes pas autorisé à réaliser cette action.' });
+
                 } else {
                     Sauce.updateOne(
                         { _id: req.params.id },
@@ -98,10 +101,15 @@ exports.modifySauce = (req, res, next) => {
 
 //Delete a sauce
 exports.deleteSauce = (req, res, next) => {
+
+    // Find sauce with its Id
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
+
+            //Check if user ID of the sauce is the same than the user ID with Auth before going one with change
             if (sauce.userId != req.auth.userId) {
                 res.status(401).json({ message: 'Vous n\'êtes pas autorisé à réaliser cette action.' });
+
             } else {
                 const filename = sauce.imageUrl.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () => {
@@ -111,6 +119,7 @@ exports.deleteSauce = (req, res, next) => {
                 })
             }
         })
+
         .catch((error) => { res.status(500).json({ error: error }) });
 };
 
@@ -129,9 +138,9 @@ exports.likeDislikeSauce = (req, res, next) => {
             .catch((error) => { res.status(400).json({ error }) });
 
 
-        //Case 2 : The user dislikes the sauce
-        //Dislikes will gain +1 and the user ID will be pushed in the usersDisliked array
+    //Case 2 : The user dislikes the sauce
     } else if (vote === -1) {
+        //Dislikes will gain +1 and the user ID will be pushed in the usersDisliked array
         Sauce.updateOne({ _id: req.params.id }, { $inc: { dislikes: 1 }, $push: { usersDisliked: req.auth.userId } })
             .then(() => { res.status(200).json({ message: 'La sauce a reçu un dislike supplémentaire !' }) })
             .catch((error) => { res.status(400).json({ error }) });
@@ -139,18 +148,18 @@ exports.likeDislikeSauce = (req, res, next) => {
 
         //Case 3 : The user cancels his/her vote
     } else {
+        // Find sauce with its Id
         Sauce.findOne({ _id: req.params.id })
             .then((sauce) => {
-
                 //Check if the userID is in the usersLiked array
                 //Likes will loose 1 and the user ID will be pulled off the usersLiked array
                 if (sauce.usersLiked.includes(req.auth.userId)) {
                     Sauce.updateOne({ _id: req.params.id }, { $inc: { likes: -1 }, $pull: { usersLiked: req.auth.userId } })
                         .then(() => { res.status(200).json({ message: 'L\'utilisateur a annulé son like !' }) })
                         .catch((error) => { res.status(400).json({ error }) });
-
-                    //Check if the userID is in the userDisliked array
-                    //Dislikes will loose 1 and the user ID will be pulled off the usersDisliked array
+                 
+                //Check if the userID is in the userDisliked array
+                //Dislikes will loose 1 and the user ID will be pulled off the usersDisliked array
                 } else if (sauce.usersDisliked.includes(req.auth.userId)) {
                     Sauce.updateOne({ _id: req.params.id }, { $inc: { dislikes: -1 }, $pull: { usersDisliked: req.auth.userId } })
                         .then(() => { res.status(200).json({ message: 'L\'utilisateur a annulé son dislike !' }) })

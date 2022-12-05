@@ -1,7 +1,8 @@
-//Import 
+//Requires
 const jwt = require('jsonwebtoken');
 
-//Function
+//Verify the token received from Front-End to let only authentified requests succeed
+//That middleware will be added to the Sauce Routes
 module.exports = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
@@ -15,3 +16,4 @@ module.exports = (req, res, next) => {
         res.status(401).json({ error });
     }
 }
+
