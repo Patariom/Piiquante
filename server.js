@@ -4,6 +4,11 @@ const app = require('./app');
 const server = http.createServer(app);
 
 
+//Import Dotenv to use environnement variables
+const dotenv = require('dotenv');
+dotenv.config();
+
+//Set Port
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -16,7 +21,7 @@ const normalizePort = val => {
   return false;
 };
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT);
 app.set('port', port);
 
 
