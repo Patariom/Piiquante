@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 
 const path = require('path');
 
+//Import Helmet to secure HTTP headers
+const helmet = require("helmet");
+
 //Import Dotenv to use environnement variables
 const dotenv = require('dotenv');
 dotenv.config();
@@ -13,13 +16,21 @@ dotenv.config();
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauce');
 
-
 //Connect to MongooDB
 mongoose.connect(process.env.MONGO_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+
+
+//Use Helmet
+app.use(helmet({
+  crossOriginResourcePolicy: false, //Allow images to load 
+  })
+);
+
 
 //Parses incoming JSON requests and puts the parsed data in req.body
 app.use(express.json());
