@@ -12,9 +12,13 @@ const helmet = require("helmet");
 const dotenv = require('dotenv');
 dotenv.config();
 
+//Import Express Rate Limit to limit  repeated requests to the APPI (limits force-brute attacks)
+const rateLimiter = require("express-rate-limit");
+
 //Import the routers into the app
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauce');
+
 
 //Connect to MongooDB
 mongoose.connect(process.env.MONGO_URI,
@@ -24,13 +28,11 @@ mongoose.connect(process.env.MONGO_URI,
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 
-
 //Use Helmet
 app.use(helmet({
   crossOriginResourcePolicy: false, //Allow images to load 
   })
 );
-
 
 //Parses incoming JSON requests and puts the parsed data in req.body
 app.use(express.json());
@@ -43,6 +45,14 @@ app.use((req, res, next) => {
   next();
 });
 
+
+//Set the limits
+const limiter = rateLimiter({
+    windowMs: 15 * 60 * 1000, 
+	max: 100, // Limit each IP to 100 requests per 15minutes (was set in WindowMS)
+    message: "Vous avez dépassé votre limite de requête, merci de patienter.",
+});
+app.use(limiter);
 
 //Register routers
 app.use('/api/auth', userRoutes);
