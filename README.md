@@ -46,6 +46,17 @@ nodemon server
 ````
 The backend will run on [http://localhost:3000](http://localhost:3000)
 
+:six: Create a .env file in the root of the projet (for security reason, the real file isn't on this repo, you'll have to create your one)
+```
+touch .env
+````
+:seven: Set the MongoDB Database : Create a cluster on MongoDb, then an user (please keep the password). Go in Network Access and select "Add IP Adress", then : "Add access from Anywhere"
+
+:eight: Copy the text in env.example file and paste it your own .env file. Then change the MONGODB_URI by your own connect link (accessible from "Connect", then "Connect your application"). Please make you replace the username and password by your own.
+
+:nine: Change the JWT_SECRET_TOKEN by your own Token (make sure it's complex enough).
+
+You're all set !
 
 _______________________________________________________
 ## Français
@@ -92,5 +103,17 @@ npm install
 nodemon server
 ````
 The backend s'exécutera sur [http://localhost:3000](http://localhost:3000)
+
+:six: Créez un fichier .env à la racine du fichier (pour des raisons de sécurité, le fichier que j'ai utilisé ne figure pas sur ce repo, vous devrez le créer)
+```
+touch .env
+````
+:seven: Paramétrez votre base de données MongoDB : créez un cluster, puis un utilisateur (pensez à conserver le mot de passe). Ensuite, allez sur Network Access et sélectionnez "Add IP Adress", puis : "Add access from Anywhere"
+
+:eight: Copiez le texte présent dans le fichier env.example and collez le dans votre propre fichier .env. Ensuite, changer la valeur de MONGODB_URI par votre propre lien de connexion(accessible depuis "COnnect" puis "Connect your application"). Pensez également à remplacer les termes username et password par vos propres données.
+
+:nine: Changez le JWT_SECRET_TOKEN par un token de votre choix.
+
+Tout est bon !
 
 
