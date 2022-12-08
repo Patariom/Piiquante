@@ -5,12 +5,17 @@ const mongoose = require('mongoose');
 
 const path = require('path');
 
+//Import Dotenv to use environnement variables
+const dotenv = require('dotenv');
+dotenv.config();
+
 //Import the routers into the app
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauce');
 
+
 //Connect to MongooDB
-mongoose.connect('mongodb+srv://piiquanteadmin:carolina6reaper@piiquante.frqhwfm.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGO_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
