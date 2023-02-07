@@ -1,12 +1,12 @@
 # Piiquante
 
-<img width="713" alt="ImageWebsite" src="https://user-images.githubusercontent.com/106959664/205670884-8f3856d2-3d2e-4170-b6a0-1d155dd85a80.PNG">
+<img alt="ImageWebsite" src="https://github.com/Patariom/Piiquante/blob/main/220207_PiiquanteMockup.png?raw=true">
 
 ## English
 
-(click on the link to go directly to the [french version](#français))
+(cliquez sur ce lien pour vous rendrez directement à la [version française](#français))
 
-*This work is the 6th project of OpenClassrooms Web Developer training.*
+*This work is the 6th project of OpenClassrooms Web Developer training.*  
 This repo contains the backend of Hot Takes web app. Hot Takes is an application, developped for the brand Piiquante, that allows users to upload and rate spicy sauces.
 
 
@@ -63,7 +63,7 @@ _______________________________________________________
 
 (click on the link to go directly to the [english version](#english))
 
-*Ce travail a été réalisé pour le Projet 6 de la formaiton Développeur Web d'OpenClassrooms.*
+*Ce travail a été réalisé pour le Projet 6 de la formaiton Développeur Web d'OpenClassrooms.*  
 Ce repo contient uniquement le backend de l'application web Hot Takes. Hot Takes est une application, développée pour la marque de sauces Piiquante, qui propose 
 aux utilisateurs de télécharger et de noter des sauces piquantes.
 
